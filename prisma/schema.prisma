@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model images {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  file_id   String
+  url       String
+  userId    String?   @unique @db.ObjectId
+  shopId    String?   @unique @db.ObjectId
+  productId String?   @db.ObjectId // ➕ NEW
+  users     users?    @relation(fields: [userId], references: [id])
+  shops     shops?    @relation(fields: [shopId], references: [id])
+  product   products? @relation(fields: [productId], references: [id]) // ➕ NEW
+}
+
+model shopReviews {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      users    @relation(fields: [userId], references: [id])
+  rating    Float
+  reviews   String?
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  shopsId   String   @db.ObjectId
+  shops     shops    @relation(fields: [shopsId], references: [id])
+}
+
+model users {
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String        @unique
+  password  String?
+  following String[]
+  avatar    images?
+  createdAt DateTime      @default(now())
+  updateAt  DateTime      @updatedAt
+  imagesId  String?       @db.ObjectId
+  reviews   shopReviews[]
+}
+
+model shops {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  bio         String?
+  category    String?
+  avatar      images?
+  coverBanner String?
+  address     String?
+  website     String?
+  socialLinks Json[]
+  ratings     Float?        @default(0)
+  reviews     shopReviews[]
+  sellerId    String?       @unique @db.ObjectId
+  seller      sellers?      @relation(fields: [sellerId], references: [id])
+  createdAt   DateTime      @default(now())
+  updateAt    DateTime      @updatedAt
+
+  products products[] // ➕ NEW
+}
+
+model sellers {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String   @unique
+  password     String?
+  phone_number String?  @unique
+  country      String?
+  createdAt    DateTime @default(now())
+  updateAt     DateTime @updatedAt
+  stripeId     String?  @unique
+  shop         shops?
+}
+
+model site_config {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  categories    String[]
+  subCategories Json
+  logo          String?
+  banner        String?
+}
+
+model products {
+  id                    String        @id @default(auto()) @map("_id") @db.ObjectId
+  title                 String
+  slug                  String        @unique
+  category              String
+  subCategory           String
+  short_description     String
+  detailed_description  String
+  images                images[]
+  video_url             String?
+  tags                  String[]
+  brand                 String?
+  colors                String[]
+  sizes                 String[]
+  starting_date         DateTime?
+  ending_date           DateTime?
+  stock                 Int
+  sale_price            Float
+  regular_price         Float
+  ratings               Float         @default(0)
+  warranty              String?
+  custom_specifications Json?
+  custom_properties     Json
+  isDeleted             Boolean?      @default(false)
+  cashOnDelivery        String?
+  discount_codes        String[]      @db.ObjectId
+  deletedAt             DateTime?
+  status                productStatus @default(Active)
+  totalSales            Int           @default(0)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  shopId                String        @db.ObjectId
+  shop                  shops         @relation(fields: [shopId], references: [id])
+}
+
+enum productStatus {
+  Active
+  Pending
+  Draft
+}
+
+model discount_codes {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  public_name   String
+  discountType  String
+  discountValue Float
+  discountCode  String   @unique
+  sellerId      String   @db.ObjectId
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

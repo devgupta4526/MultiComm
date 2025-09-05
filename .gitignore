@@ -1,44 +1,80 @@
-# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# compiled output
-dist
-tmp
-out-tsc
+# ---------------------
+# Nx / Monorepo
+# ---------------------
+dist/
+tmp/
+out-tsc/
+.nx/cache
+.nx/workspace-data
 
-# dependencies
-node_modules
+# ---------------------
+# Dependencies
+# ---------------------
+node_modules/
 
+# ---------------------
+# Environment files
+# (ignore everywhere in repo)
+# ---------------------
+.env
+.env.* 
+apps/*/.env
+
+# ---------------------
 # IDEs and editors
+# ---------------------
 /.idea
 .project
 .classpath
 .c9/
 *.launch
 .settings/
-*.sublime-workspace
+/*.sublime-workspace
 
-# IDE - VSCode
+# VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# misc
+# ---------------------
+# Misc build & test
+# ---------------------
 /.sass-cache
 /connect.lock
 /coverage
 /libpeerconnection.log
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 testem.log
 /typings
+test-output/
 
-# System Files
+# ---------------------
+# System files
+# ---------------------
 .DS_Store
 Thumbs.db
 
-.nx/cache
-.nx/workspace-data
+# ---------------------
+# Next.js
+# ---------------------
+.next/
+out/
 
-test-output
+# ---------------------
+# Prisma
+# ---------------------
+/prisma/dev.db
+/prisma/dev.db-journal
+/generated/prisma
+
+# ---------------------
+# Docker
+# ---------------------
+docker-data/
