@@ -1,88 +1,80 @@
-import axios from 'axios';
-
+import axios from "axios";
+import { runRedirectToLogin } from "./redirect";
 
 const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api',
+    baseURL: process.env.NEXT_PUBLIC_SERVER_URI,
     withCredentials: true,
-});
+})
 
 let isRefreshing = false;
 let refreshSubscribers: (() => void)[] = [];
 
-//Handle logout and prevent infinite loops
+
+// Handle logout and prevent infinite loops
 const handleLogout = () => {
-    if (window.location.pathname !== '/login') {
-        window.location.href = '/login';
+    const publicPaths = ['/login', '/signup', '/forgot-password'];
+    const currentPath = window.location.pathname;
+
+    if (!publicPaths.includes(currentPath)) {
+        runRedirectToLogin();
     }
 }
 
-
-//Handle adding the refresh token to queued requests
+//Handle adding a new access token to queued requests
 const subscribeTokenRefresh = (callback: () => void) => {
     refreshSubscribers.push(callback);
 }
 
-
-//Execute all queued requests after token refresh
+//Execute queued request after refresh
 const onRefreshSuccess = () => {
-    refreshSubscribers.forEach(callback => callback());
+    refreshSubscribers.forEach((callback) => callback());
     refreshSubscribers = [];
 }
 
-//Handling the api request 
+// Handle API requests
 axiosInstance.interceptors.request.use(
     (config) => config,
-    (error) => {
-        return Promise.reject(error);
-    }
-);
+    (error) => Promise.reject(error)
+)
 
-//Handle the expired token and refresh logic
+// Handle expired token and refresh logic
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            if (isRefreshing) {
-                return new Promise((resolve, reject) => {
-                    subscribeTokenRefresh(() => {
-                        resolve(axiosInstance(originalRequest));
-                    });
-                });
-            }
+        const is401 = error?.response?.status === 401;
+        const isRetry = originalRequest?._retry;
+        const isAuthRequired = originalRequest?.requireAuth === true;
 
-            isRefreshing = true;
+        if (is401 && !isRetry && isAuthRequired) {
+            if (isRefreshing) {
+                return new Promise((resolve) => {
+                    subscribeTokenRefresh(() => resolve(axiosInstance(originalRequest)));
+                })
+            }
             originalRequest._retry = true;
+            isRefreshing = true;
 
             try {
-                await axiosInstance.post(
-                    `${process.env.NEXT_PUBLIC_SERVER_URI}/api/refresh-token`,
+                await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/refresh-token`,
                     {},
-                    {
-                        withCredentials: true,
-                    }
-                );
+                    { withCredentials: true }
+                )
 
                 isRefreshing = false;
                 onRefreshSuccess();
 
                 return axiosInstance(originalRequest);
-
-            } catch (err) {
+            } catch (error) {
                 isRefreshing = false;
                 refreshSubscribers = [];
                 handleLogout();
-                return Promise.reject(err);
-            } finally {
-                isRefreshing = false;
+                return Promise.reject(error);
             }
         }
-
         return Promise.reject(error);
     }
-);
-
+)
 
 export default axiosInstance;
-

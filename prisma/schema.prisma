@@ -47,7 +47,20 @@ model users {
   createdAt DateTime      @default(now())
   updateAt  DateTime      @updatedAt
   imagesId  String?       @db.ObjectId
-  reviews   shopReviews[]
+  shopReviews shopReviews[]
+  followings  followers[]
+   orders      orders[]
+}
+
+model followers {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String @db.ObjectId
+  shopsId String @db.ObjectId
+
+  user  users  @relation(fields: [userId], references: [id])
+  shops shops? @relation(fields: [shopsId], references: [id])
+
+  @@unique([userId, shopsId])
 }
 
 model shops {
@@ -68,6 +81,8 @@ model shops {
   updateAt    DateTime      @updatedAt
 
   products products[] // ➕ NEW
+  followers     followers[]
+  orders        orders[]
 }
 
 model sellers {
@@ -141,4 +156,35 @@ model discount_codes {
   sellerId      String   @db.ObjectId
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+
+model orders {
+  id                String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String       @db.ObjectId
+  user              users        @relation(fields: [userId], references: [id])
+  shopId            String       @db.ObjectId
+  shop              shops        @relation(fields: [shopId], references: [id])
+  total             Float
+  shippingAddressId String?
+  couponCode        String?
+  discountAmount    Float?
+  status            String
+  deliveryStatus    String       @default("Ordered")
+  items             orderItems[] @relation("OrderItemsRelation")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model orderItems {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId         String   @db.ObjectId
+  productId       String
+  quantity        Int
+  price           Float
+  selectedOptions Json?
+  orders          orders   @relation(fields: [orderId], references: [id], name: "OrderItemsRelation")
+  createdAt       DateTime @default(now())
 }

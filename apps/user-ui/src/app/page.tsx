@@ -18,6 +18,8 @@ const page = () => {
     staleTime: 1000 * 60 * 2,
   });
 
+  console.log("products:",products);
+
   const { data: latestProducts, isLoading: LatestProductsLoading } = useQuery({
     queryKey: ['latest-products'],
     queryFn: async () => {
@@ -26,6 +28,8 @@ const page = () => {
     },
     staleTime: 1000 * 60 * 2,
   });
+
+  console.log("latestProducts",latestProducts);
 
   const { data: shops, isLoading: shopLoading } = useQuery({
     queryKey: ['shops'],
