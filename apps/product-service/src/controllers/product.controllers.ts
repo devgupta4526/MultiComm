@@ -412,7 +412,7 @@ export const getAllEvents = async (req: Request, res: Response, next: NextFuncti
                 take: limit,
                 include: {
                     images: true,
-                    Shop: true,
+                    shop: true,
                 },
                 where: baseFilter,
                 orderBy: {
@@ -450,7 +450,7 @@ export const getProductDetails = async (req: Request, res: Response, next: NextF
             },
             include: {
                 images: true,
-                Shop: true,
+                shop: true,
             }
         });
         res.status(201).json({
@@ -515,7 +515,7 @@ export const getFilteredProducts = async (req: Request, res: Response, next: Nex
                 take: parsedLimit,
                 include: {
                     images: true,
-                    Shop: true,
+                    shop: true,
                 }
             }),
             prisma.products.count({ where: filters })
@@ -592,7 +592,7 @@ export const getFilteredEvents = async (req: Request, res: Response, next: NextF
                 take: parsedLimit,
                 include: {
                     images: true,
-                    Shop: true,
+                    shop: true,
                 }
             }),
             prisma.products.count({ where: filters })
@@ -645,7 +645,7 @@ export const getFilteredShops = async (req: Request, res: Response, next: NextFu
                 skip,
                 take: parsedLimit,
                 include: {
-                    sellers: true,
+                    seller: true,
                     products: true,
                     // followers : true,
                 }
