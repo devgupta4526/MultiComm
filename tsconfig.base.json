@@ -9,6 +9,8 @@
     "lib": [
       "es2022"
     ],
+    "types": ["node"],
+    "esModuleInterop": true,
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "noEmitOnError": true,

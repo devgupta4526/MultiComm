@@ -1,26 +1,25 @@
 {
-  "name": "@./api-gateway",
+  "name": "kafka-service",
   "version": "0.0.1",
   "private": true,
   "nx": {
     "targets": {
       "serve": {
-        "continuous": true,
         "executor": "@nx/js:node",
         "defaultConfiguration": "development",
         "dependsOn": [
           "build"
         ],
         "options": {
-          "buildTarget": "@./api-gateway:build",
+          "buildTarget": "kafka-service:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@./api-gateway:build:development"
+            "buildTarget": "kafka-service:build:development"
           },
           "production": {
-            "buildTarget": "@./api-gateway:build:production"
+            "buildTarget": "kafka-service:build:production"
           }
         }
       }

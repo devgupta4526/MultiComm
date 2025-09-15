@@ -2,7 +2,7 @@ import express from 'express';
 import cors from "cors";
 import proxy from 'express-http-proxy'
 import morgan from 'morgan';
-import { rateLimit, ipKeyGenerator } from "express-rate-limit";
+import rateLimit from "express-rate-limit";
 import cookieParser from 'cookie-parser';
 import initializeConfig from './libs/initializeSiteConfig';
 
@@ -27,7 +27,7 @@ const limiter = rateLimit({
   message: { error: 'Too many request please try again later!' },
   standardHeaders: true,
   legacyHeaders: true,
-   keyGenerator: (req) => ipKeyGenerator(req.ip!), 
+  keyGenerator: (req: any) => req.ip
 });
 
 app.use(limiter);
@@ -36,10 +36,10 @@ app.get('/gateway-health', (req, res) => {
   res.send({ message: 'Welcome to api-gateway!' });
 });
 
-// app.use('/chatting', proxy('http://localhost:6006'));
-// app.use('/admin', proxy('http://localhost:6005'));
-// app.use('/order', proxy('http://localhost:6004'));
-// app.use('/seller', proxy('http://localhost:6003'));
+app.use('/chatting', proxy('http://localhost:6006'));
+app.use('/admin', proxy('http://localhost:6005'));
+app.use('/order', proxy('http://localhost:6004'));
+app.use('/seller', proxy('http://localhost:6003'));
 app.use('/product', proxy("http://localhost:6002"));
 app.use('/', proxy("http://localhost:6001"));
 

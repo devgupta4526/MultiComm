@@ -18,7 +18,8 @@
           "passWithNoTests": true
         },
         "dependsOn": [
-          "auth-service:build"
+          "auth-service:build",
+          "auth-service:serve"
         ]
       }
     }
