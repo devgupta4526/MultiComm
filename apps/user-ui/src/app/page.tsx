@@ -1,11 +1,12 @@
 'use client'
 import React from 'react'
-import Hero from '../shared/components/modules/Hero'
-import SectionTitle from '../shared/components/section/sectionTitle'
 import { useQuery } from '@tanstack/react-query'
 import axiosInstance from '../utils/axiosInstance'
+import Hero from '../shared/components/modules/Hero'
+import SectionTitle from '../shared/components/section/sectionTitle'
 import ProductCard from '../shared/components/cards/ProductCard'
 import ShopCard from '../shared/components/cards/ShopCard'
+
 
 const page = () => {
 
@@ -18,8 +19,6 @@ const page = () => {
     staleTime: 1000 * 60 * 2,
   });
 
-  console.log("products:",products);
-
   const { data: latestProducts, isLoading: LatestProductsLoading } = useQuery({
     queryKey: ['latest-products'],
     queryFn: async () => {
@@ -28,8 +27,6 @@ const page = () => {
     },
     staleTime: 1000 * 60 * 2,
   });
-
-  console.log("latestProducts",latestProducts);
 
   const { data: shops, isLoading: shopLoading } = useQuery({
     queryKey: ['shops'],
