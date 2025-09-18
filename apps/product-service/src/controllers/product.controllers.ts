@@ -5,15 +5,16 @@ import { Prisma } from "@prisma/client";
 import { AuthError, NotFoundError, ValidationError } from "@packages/error_handler";
 
 
+
+
 // get product categories
 export const getCategories = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const config = await prisma.site_config.findFirst();
-        console.log("config",config);
 
         if (!config) {
             return res.status(404).json({ message: 'Categories not found' });
-        }       
+        }
 
         return res.status(200).json({
             categories: config.categories,
@@ -143,7 +144,6 @@ export const deleteProductImage = async (req: Request, res: Response, next: Next
     }
 }
 
-
 // create product 
 export const createProduct = async (req: any, res: Response, next: NextFunction) => {
     try {
@@ -193,7 +193,7 @@ export const createProduct = async (req: any, res: Response, next: NextFunction)
                 warranty,
                 cashOnDelivery: cash_on_delivery,
                 slug,
-                shopId: req.seller?.shop?.id!,
+                shopId: req.seller?.Shop?.id!,
                 tags: Array.isArray(tags) ? tags : tags.split(","),
                 brand,
                 video_url,
@@ -388,7 +388,6 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
         return next(error);
     }
 }
-
 
 // get All events
 export const getAllEvents = async (req: Request, res: Response, next: NextFunction) => {
@@ -767,3 +766,6 @@ export const topShops = async (req: Request, res: Response, next: NextFunction) 
         return next(error);
     }
 }
+
+
+
