@@ -360,7 +360,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
                 take: limit,
                 include: {
                     images: true,
-                    shop: true,
+                    Shop: true,
                 },
                 where: baseFilter,
                 orderBy: {
@@ -411,7 +411,7 @@ export const getAllEvents = async (req: Request, res: Response, next: NextFuncti
                 take: limit,
                 include: {
                     images: true,
-                    shop: true,
+                    Shop: true,
                 },
                 where: baseFilter,
                 orderBy: {
@@ -449,7 +449,7 @@ export const getProductDetails = async (req: Request, res: Response, next: NextF
             },
             include: {
                 images: true,
-                shop: true,
+                Shop: true,
             }
         });
         res.status(201).json({
@@ -514,7 +514,7 @@ export const getFilteredProducts = async (req: Request, res: Response, next: Nex
                 take: parsedLimit,
                 include: {
                     images: true,
-                    shop: true,
+                    Shop: true,
                 }
             }),
             prisma.products.count({ where: filters })
@@ -591,7 +591,7 @@ export const getFilteredEvents = async (req: Request, res: Response, next: NextF
                 take: parsedLimit,
                 include: {
                     images: true,
-                    shop: true,
+                    Shop: true,
                 }
             }),
             prisma.products.count({ where: filters })
@@ -644,7 +644,7 @@ export const getFilteredShops = async (req: Request, res: Response, next: NextFu
                 skip,
                 take: parsedLimit,
                 include: {
-                    seller: true,
+                    sellers: true,
                     products: true,
                     // followers : true,
                 }

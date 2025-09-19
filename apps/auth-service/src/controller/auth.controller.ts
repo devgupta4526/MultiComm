@@ -8,7 +8,7 @@ import { setCookie } from "../utils/cookies/setCookies";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: "2025-07-30.basil",
+   apiVersion: "2025-08-27.basil",
 });
 
 
@@ -194,7 +194,7 @@ export const refreshToken = async (req: any, res: Response, next: NextFunction) 
             account = await prisma.sellers.findUnique({
                 where: { id: decoded.id },
                 include: {
-                    shop: true,
+                    Shop: true,
                 }
             });
         }
