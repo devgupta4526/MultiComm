@@ -1,26 +1,26 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import ProductCard from 'apps/user-ui/src/shared/components/cards/ProductCard'
 import axiosInstance from 'apps/user-ui/src/utils/axiosInstance'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { Range } from 'react-range';
+import ProductCard from '../../shared/components/cards/ProductCard'
 
 const MIN = 0;
-const MAX = 1199;
+const MAX = 1250000;
 
 const Page = () => {
 
     const [isProductLoading, setIsProductLoading] = useState(false);
-    const [priceRange, setPriceRange] = useState([0, 15000000]);
+    const [priceRange, setPriceRange] = useState([0, 1250000]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [selectedSizes, setSelectedSizes] = useState<string[]>([])
     const [selectedColors, setSelectedColors] = useState<string[]>([]);
     const [page, setPage] = useState(1);
     const [products, setProducts] = useState<any[]>([]);
     const [totalPages, setTotalPages] = useState(1);
-    const [tempPriceRange, setTempPriceRange] = useState([0, 1199]);
+    const [tempPriceRange, setTempPriceRange] = useState([0, 1250000]);
 
     const colors = [
         { name: 'Black', code: '#000' },
@@ -66,9 +66,7 @@ const Page = () => {
             query.set("page", page.toString());
             query.set("limit", '12');
 
-            const res = await axiosInstance.get(
-                `/product/api/get-filtered-products?${query.toString()}`)
-                console.log("Products API response:", res.data);
+            const res = await axiosInstance.get(`/product/api/get-filtered-products?${query.toString()}`)
             setProducts(res.data.products);
             setTotalPages(res.data.pagination.totalPages);
 

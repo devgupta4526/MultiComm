@@ -1,11 +1,11 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import ProductCard from 'apps/user-ui/src/shared/components/cards/ProductCard'
 import axiosInstance from 'apps/user-ui/src/utils/axiosInstance'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { Range } from 'react-range';
+import ProductCard from '../../shared/components/cards/ProductCard'
 
 const MIN = 0;
 const MAX = 1199;

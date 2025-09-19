@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { categories } from 'apps/user-ui/src/configs/categories'
+import ShopCard from '../../shared/components/cards/ShopCard'
 import { countries } from 'apps/user-ui/src/configs/countries'
-import ShopCard from 'apps/user-ui/src/shared/components/cards/ShopCard'
 
 
 

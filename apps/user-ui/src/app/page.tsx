@@ -1,12 +1,11 @@
 'use client'
 import React from 'react'
+import Hero from './shared/components/modules/Hero'
+import SectionTitle from './shared/components/section/sectionTitle'
 import { useQuery } from '@tanstack/react-query'
 import axiosInstance from '../utils/axiosInstance'
-import Hero from '../shared/components/modules/Hero'
-import SectionTitle from '../shared/components/section/sectionTitle'
-import ProductCard from '../shared/components/cards/ProductCard'
-import ShopCard from '../shared/components/cards/ShopCard'
-
+import ProductCard from './shared/components/cards/ProductCard'
+import ShopCard from './shared/components/cards/ShopCard'
 
 const page = () => {
 

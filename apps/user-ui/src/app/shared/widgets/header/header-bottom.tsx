@@ -1,10 +1,10 @@
 'use client';
 import useUser from 'apps/user-ui/src/hooks/useUser';
+import { navItems } from '../../../../configs/constants';
 import { AlignLeft, ChevronDown, HeartIcon, ShoppingCart, UserRoundPenIcon } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useStore } from 'apps/user-ui/src/store';
-import { navItems } from '../../configs/constants';
 
 const HeaderBottom = () => {
     const [show, setShow] = useState(false);
@@ -60,7 +60,7 @@ const HeaderBottom = () => {
 
                 {/* Navigation Links */}
                 <div className="flex items-center gap-5">
-                    {navItems.map((i: NavItemTypes, index: number) => (
+                    {navItems.map((i: NavItemsTypes, index: number) => (
                         <Link
                             key={index}
                             className="text-[17px] font-medium hover:text-[#3489FF] transition"

@@ -1,7 +1,6 @@
-import Header from '../shared/widgets';
 import './global.css';
 import Providers from './Providers';
-
+import Header from './shared/widgets/header';
 
 export const metadata = {
   title: 'ESHOP',
